@@ -1,0 +1,15 @@
+{
+  "name": "yt_megascraper",
+  "version": "1.0.0",
+  "description": "Scrapes video ids from playlists of any set of search terms, scales with multiple API Keys and large data sets",
+  "main": "megaScrape.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2"
+  }
+}
