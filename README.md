@@ -1,5 +1,8 @@
 # megaYoutubePlaylistScraper
 
+
+node > v7.6 required
+
 A massive youtube api scraper that recurively grabs all the video ids out of a playlist for any search term.
 
 Supports multiple API keys to be set for grabbing huge amounts of data. Program automatically counts and iterates through keys as quota is used.
@@ -21,6 +24,8 @@ Basically create a new google project, add Youtube Data API v3 from services, cr
 That will give you an API Key, repeat step for more keys.
 
 ### Install
+
+
 Run `npm install`
 
 ### Configure Settings
