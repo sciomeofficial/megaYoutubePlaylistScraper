@@ -1,7 +1,7 @@
 module.exports = {
     
-    // How many playlists to find per search term keep reasonable amount or else memory might run out
-    PLAYLIST_LIMIT: 100,
+    // How many playlists to find per search term, google caps out at around 500-600 results depending on api
+    PLAYLIST_LIMIT: 1000,
     
     // How many concurrent playlists have their videos pulled out at once, 100+ might get buggy since it may be too many calls per second
     CONCURRENT_AMOUNT: 50,
