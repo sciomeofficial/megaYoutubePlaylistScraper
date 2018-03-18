@@ -50,15 +50,15 @@ function chunk(array, size) {
 }
 
 // Rewrote write and append file to be a promise to be cleaner
-function appendToMyFile(msg){
+function appendToMyFile(msg) {
     return new Promise((resolve, reject) => {
         fs.appendFile(WRITE_FILE_DIR, msg, 'utf8', () => resolve());
     })
-    
+
 }
 
-function replaceFileWrite(msg){
-       return new Promise((resolve, reject) => {
+function replaceFileWrite(msg) {
+    return new Promise((resolve, reject) => {
         fs.writeFile(WRITE_FILE_DIR, msg, 'utf8', () => resolve());
     })
 }
@@ -76,9 +76,9 @@ function addQuotaUsage(quotaType) {
     if (QUOTA_USAGE > QUOTA_THRESHOLD) {
         CURRENT_API_ITERATION++
         CURRENT_API_Key = apiKeyQueue[CURRENT_API_ITERATION]
-        
-        if(!CURRENT_API_Key){
-            throw Error("Ran out of Api Keys, Make sure to supply more");
+
+        if (!CURRENT_API_Key) {
+            throw Error("Ran out of API Keys, Make sure to supply more");
         }
 
         QUOTA_USAGE = 0;
@@ -130,8 +130,11 @@ function getPlaylists(searchTerm, nextPageToken) {
                         if (err.statusCode === 403) {
                             console.log("Your api key " + CURRENT_API_Key + " has run out of quota, program trusts that your quota usage is below 50000 on init run per key")
                         }
-                        if (err.statusCode === 400) {
-                            console.log("You can ignore this error most of the time, Youtube playlist most likely has been deleted in past, will ignore it")
+                        if (err.statusCode === 404) {
+                            console.log("This ran because your search term was not found in youtube search")
+                        }
+                        if (err.statusCode === 503) {
+                            console.log("Youtube did not give out a response correctly, skipping")
                         }
                         return reject(err);
                     })
@@ -185,10 +188,13 @@ function getPlaylistSongs(playlistId) {
                         if (err.statusCode === 403) {
                             console.log("Your api key " + CURRENT_API_Key + " has run out of quota, program trusts that your quota usage is below 50000 on init run per key")
                         }
-                        if (err.statusCode === 400) {
-                            console.log("Consider yourself screwed if this runs lol!")
+                        if (err.statusCode === 404) {
+                            console.log("You can ignore this error most of the time, Youtube playlist most likely has been deleted in past, will ignore it")
                         }
-                        
+                        if (err.statusCode === 503) {
+                            console.log("Youtube did not give out a response correctly, skipping")
+                        }
+
                         return reject(err);
 
                     })
@@ -197,10 +203,6 @@ function getPlaylistSongs(playlistId) {
         get50Songs(playlistId).then(res => resolve({ videoIds: res, playlistId })).catch(() => resolve({ videoIds: [], playlistId }));
     });
 }
-
-
-
-
 
 function completeSearchTerm(searchTerm) {
     return new Promise((resolve, reject) => {
@@ -230,7 +232,7 @@ function completeSearchTerm(searchTerm) {
                     }
 
                     var json = JSON.stringify(resultObj);
-                    
+
                     appendToMyFile(json).then(() => {
                         console.log("Done writing to disk", searchTerm, "is complete")
                         console.log("===================================================")
@@ -258,10 +260,10 @@ async function main() {
         await completeSearchTerm(searchQueue[z])
         // Seperate the objects as if in an array except for last one
         // Like so -->  {  }, {  }, {  }
-        if(z !== searchQueue.length){
+        if (z !== searchQueue.length - 1) {
             await appendToMyFile(',')
         }
-        
+
     }
     // Close the array braces
     await appendToMyFile(']')
@@ -271,10 +273,3 @@ async function main() {
     console.log("Completely Done!")
 }
 main();
-
-
-
-
-
-
-
