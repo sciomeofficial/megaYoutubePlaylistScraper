@@ -1,6 +1,6 @@
 # megaYoutubePlaylistScraper
 
-[![Bintray](https://img.shields.io/badge/node-v7.6%20%3E-brightgreen.svg?)](https://github.com/sciomeofficial/megaYoutubePlaylistScraper)
+[![Bintray](https://img.shields.io/badge/node-%3E%207.6-green.svg?)](https://github.com/sciomeofficial/megaYoutubePlaylistScraper)
 
 A massive youtube api scraper that recurively grabs all the video ids out of a playlist for any search term.
 
